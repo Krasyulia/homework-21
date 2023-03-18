@@ -9,7 +9,7 @@ public class CardTest {
     void cardOrderSuccessTest(){
         open("http://localhost:9999/");
 
-        $("input.input__control").setValue("Кристобаль Картохель");
+        $("[data-test-id='name'] input").setValue("Кристобаль Картохель");
         $("input[name='phone']").setValue("+79085552266");
         $("span.checkbox__box").click();
         $("span.button__text").click();
@@ -20,7 +20,7 @@ public class CardTest {
     void cardOrderNameValidationTest(){
         open("http://localhost:9999/");
 
-        $("input.input__control").setValue("Karl Marx");
+        $("[data-test-id='name'] input").setValue("Karl Marx");
         $("input[name='phone']").setValue("+79085552266");
         $("span.checkbox__box").click();
         $("span.button__text").click();
@@ -32,7 +32,7 @@ public class CardTest {
     void cardOrderPhoneValidationTest(){
         open("http://localhost:9999/");
 
-        $("input.input__control").setValue("Карл Маркс");
+        $("[data-test-id='name'] input").setValue("Карл Маркс");
         $("input[name='phone']").setValue("+7908555226611111111");
         $("span.button__text").click();
         $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(text("Телефон указан неверно"));
@@ -43,10 +43,32 @@ public class CardTest {
     void cardOrderAgreementValidationTest(){
         open("http://localhost:9999/");
 
-        $("input.input__control").setValue("Карл Маркс");
+        $("[data-test-id='name'] input").setValue("Карл Маркс");
         $("input[name='phone']").setValue("+79085552266");
         $("span.button__text").click();
-        $("label[data-test-id=\"agreement\"]").shouldBe(visible);
+        $("label[data-test-id=\"agreement\"].input_invalid").shouldBe(visible);
+
+    }
+
+    @Test
+    void emptyNameTest(){
+        open("http://localhost:9999/");
+
+        $("input[name='phone']").setValue("+79085552266");
+        $("span.checkbox__box").click();
+        $("span.button__text").click();
+        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
+
+    }
+
+    @Test
+    void emptyPhoneTest(){
+        open("http://localhost:9999/");
+
+        $("[data-test-id='name'] input").setValue("Карл Маркс");
+        $("span.checkbox__box").click();
+        $("span.button__text").click();
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
 
     }
 
